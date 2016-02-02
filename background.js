@@ -53,19 +53,14 @@ chrome.commands.onCommand.addListener(function(command) {
 chrome.webRequest.onBeforeRequest.addListener(
   function(details) {
     if (details.url.indexOf("http://reload.extensions") >= 0) {
-		reloadExtensions();
-		chrome.tabs.get(details.tabId, function(tab) {
-			if (tab.selected === false) {
-				chrome.tabs.remove(details.tabId);
-			}
-		});
-		return {
-			// close the newly opened window
-			redirectUrl: chrome.extension.getURL("close.html")
-		};
+      reloadExtensions();
+      chrome.tabs.get(details.tabId, function(tab) {
+        chrome.tabs.remove(details.tabId);
+        console.log("Closing tab");
+      });
+      return {};
     }
-
-	return {cancel: false};
+    return {cancel: false};
   },
   {
     urls: ["http://reload.extensions/"],
